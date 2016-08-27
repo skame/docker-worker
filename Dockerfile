@@ -16,8 +16,6 @@ RUN apt install -y --no-install-recommends language-pack-ja && export LANG=ja_JP
 # for sshd
 RUN rm -f /etc/service/sshd/down
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-ADD ssh/ /etc/ssh/
-RUN chown root:root /etc/ssh/* && chmod 400 /etc/ssh/*key
 # for sudo
 RUN echo 'skame ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # for local account (used when ldap failed)
