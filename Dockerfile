@@ -21,7 +21,7 @@ RUN echo 'skame ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # for local account (used when ldap failed)
 RUN echo "skame:x:1039:1000::/home/skame:/usr/bin/zsh" >>/etc/passwd && echo "skame:*:16737:0:99999:7:::" >>/etc/shadow && mkdir /home/skame && mkdir /home/skame/.ssh && chown 1039 /home/skame/.ssh
 RUN echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZF2/4elfFD6ZAOQH62hvWj1Cyuhg/4ghz1mhl66ynNBDhkYGp94OjBS1PuroEkaLkP44XiYXCMFKbPODbWfLPElpb0kK/9kzEvUAo8AE/Ok9Ffvg/MN3bbgLHFvwdrTvtKmn3JdcEe52WXeRoF2bpqmPo8VejcKpQVUt0+keYCQXzcy8ZrlOy7mk1sPh2G5PkqK2TkwKTpvS0STRID3vZi2jLUAVD6nm/deNpbyng6oS8R57kT9so3pj0QmZkWb4qOneeSXa0CvCXcrPsn0ATQvDXsxXXzoMucs8a76HzmifleJvyqbkDq/Bu2Ua8DeBsn97aijS7QZymB1qVP4id PIV AUTH pubkey > /home/skame/.ssh/authorized_keys
-RUN chown -R 1039 /home/skame/.ssh && chmod -R 0600 /home/skame/.ssh
+RUN chown -R 1039 /home/skame/.ssh && chmod -R 0600 /home/skame/.ssh && chmod o+x /home/skame/.ssh
 
 # docker and utilities
 RUN apt install -y --no-install-recommends docker.io
