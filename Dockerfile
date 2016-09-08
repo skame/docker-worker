@@ -42,6 +42,8 @@ RUN apt install -y --no-install-recommends zsh tmux emacs w3m owncloud-client-cm
 
 # add db
 RUN apt install -y --no-install-recommends mysql-client
+# misc
+RUN apt install -y --no-install-recommends inetutils-ping traceroute net-tools
 
 # BEEEEEEEELINE
 RUN wget -O - http://package.mapr.com/releases/pub/maprgpg.key | sudo apt-key add -
