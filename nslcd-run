@@ -1,6 +1,8 @@
-#!/bin/sh
-if [ ! -e /etc/nslcd.conf ]; then
-  sigil -p -f /etc/nslcd.conf-template > /etc/nslcd.conf
-  chmod o-r /etc/nslcd.conf
-fi 
-exec /usr/sbin/nslcd -d 2>&1
+#!/bin/bash
+if [ -v LDAP_URI ]; then
+  if [ ! -e /etc/nslcd.conf ]; then
+    sigil -p -f /etc/nslcd.conf-template > /etc/nslcd.conf
+    chmod o-r /etc/nslcd.conf
+  fi 
+  exec /usr/sbin/nslcd -d 2>&1
+fi
