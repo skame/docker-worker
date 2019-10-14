@@ -1,6 +1,6 @@
 FROM phusion/baseimage:0.11
 
-MAINTAINER Satoshi KAMEI "skame@nttv6.jp"
+LABEL maintainer "KAMEI Satoshi / <skame@nttv6.jp>"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -99,17 +99,20 @@ RUN add-apt-repository ppa:longsleep/golang-backports && \
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 # k8s
 RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
-RUN curl -Lo /usr/local/bin/kubectl  https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+RUN curl -s -L https://storage.googleapis.com/kubernetes-release/release/stable.txt | \
+    (curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/"$(cat)"/bin/linux/amd64/kubectl)
 RUN curl -Lo /usr/local/bin/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 RUN curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest |\
 	grep browser_download | grep linux | cut -d '"' -f 4 | xargs curl -O -L && \
 	mv kustomize_*_linux_amd64 /usr/local/bin/kustomize
 RUN chmod a+x /usr/local/bin/kubectl /usr/local/bin/skaffold /usr/local/bin/kustomize
 # gcloud
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
+RUN env CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update -y && apt-get install google-cloud-sdk -y
+    apt-get update -y && apt-get install google-cloud-sdk -y --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # some customize scripts
 RUN mkdir -p /etc/my_init.d
 COPY adduser.sh /etc/my_init.d/adduser.sh
