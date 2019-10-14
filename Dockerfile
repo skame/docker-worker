@@ -33,7 +33,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && a
     $(lsb_release -cs) \
     edge" && apt update && apt install -y --no-install-recommends docker-ce
 RUN curl -s -L https://github.com/docker/compose/releases/latest | \
-    egrep -o '/docker/compose/releases/download/[0-9.]*/docker-compose-Linux-x86_64' | head -1 | \
+    grep -E -o '/docker/compose/releases/download/[0-9.]*/docker-compose-Linux-x86_64' | head -1 | \
     (curl -Lo /usr/local/bin/docker-compose http://github.com/"$(cat)") && \
     chmod +x /usr/local/bin/docker-compose && \
     /usr/local/bin/docker-compose --version
@@ -74,13 +74,13 @@ ENV PATH $PATH:$HIVE_HOME/bin
 
 # Presto CLI
 RUN curl -s -L https://prestosql.io/docs/current/installation/cli.html | \
-    egrep -o 'https://repo1.maven.org/maven2/io/prestosql/presto-cli/[0-9.]+/presto-cli-[0-9.]+-executable.jar' | \
+    grep -E -o 'https://repo1.maven.org/maven2/io/prestosql/presto-cli/[0-9.]+/presto-cli-[0-9.]+-executable.jar' | \
     (curl -Lo /usr/local/bin/presto "$(cat)") && \
     chmod +x /usr/local/bin/presto && \
     /usr/local/bin/presto --version
 # entrykit
 RUN curl -Ls https://github.com/progrium/entrykit/releases/ | \
-  egrep -o '/progrium/.*entrykit_[0-9\.]+_Linux_x86_64.tgz' | head -1 | \
+  grep -E -o '/progrium/.*entrykit_[0-9\.]+_Linux_x86_64.tgz' | head -1 | \
   (curl -Lo entrykit.tgz http://github.com/"$(cat)") \
   && tar xzf entrykit.tgz -C /bin \
   && rm entrykit.tgz \
@@ -89,7 +89,7 @@ RUN curl -Ls https://github.com/progrium/entrykit/releases/ | \
 
 # sigli
 RUN curl -Ls https://github.com/gliderlabs/sigil/releases | \
-  egrep -o '/gliderlabs/sigil/.*sigil_[0-9\.]+_Linux_x86_64.tgz' | head -1 | \
+  grep -E -o '/gliderlabs/sigil/.*sigil_[0-9\.]+_Linux_x86_64.tgz' | head -1 | \
   (curl -Lo sigil.tgz http://github.com/"$(cat)") \
   && tar xzf sigil.tgz -C /bin \
   && rm sigil.tgz && sigil -v
