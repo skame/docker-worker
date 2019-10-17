@@ -112,6 +112,10 @@ RUN env CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     apt-get update -y && apt-get install google-cloud-sdk -y --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+# velero
+RUN curl -s https://github.com/vmware-tanzu/velero/releases | grep linux-amd64 | head -1 | \
+    cut -d '"' -f 2 | (curl -Ls "https://github.com/$(cat)") | \
+    tar xvfzO - --wildcards '*/velero' > /usr/local/bin/velero && chmod a+x /usr/local/bin/velero
 
 # some customize scripts
 RUN mkdir -p /etc/my_init.d
